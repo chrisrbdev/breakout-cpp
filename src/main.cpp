@@ -78,6 +78,25 @@ int main()
             ballSpeed = { 4.0f, -4.0f };
         }
 
+        // PADDLE COLLISION
+        if (CheckCollisionCircleRec(ballPosition, ballRadius, paddle) && ballSpeed.y > 0) {
+            //CheckCollisionCircleRec is native function from raylib.h
+            float paddleCenter = paddle.x + paddle.width / 2.0f;
+            float distanceFromCenter = ballPosition.x - paddleCenter;
+
+            ballSpeed.y *= -1.0f;
+            ballSpeed.x = distanceFromCenter * 0.08f;
+        }
+
+        // BRICK COLLISION
+        for (Brick& brick : bricks) {
+            if (brick.active && CheckCollisionCircleRec(ballPosition, ballRadius, brick.rect)) {
+                brick.active = false;
+                ballSpeed.y *= -1.0f;
+                break;
+            }
+        }
+
         // Draw
         BeginDrawing();
         ClearBackground(BLACK);
