@@ -18,7 +18,7 @@ int main()
     Rectangle paddle = {400, 500, 140, 20};
 
     Vector2 ballPosition = {470, 300};
-    Vector2 ballSpeed = {5.0f, -5.0f};
+    Vector2 ballSpeed = {4.0f, -4.0f};
     float ballRadius = 10.0f;
 
     std::vector<Brick> bricks;
@@ -75,7 +75,7 @@ int main()
 
         if (ballPosition.y - ballRadius > screenHeight) {
             ballPosition = { 470, 300 };
-            ballSpeed = { 5.0f, -5.0f };
+            ballSpeed = { 4.0f, -4.0f };
         }
 
         // Draw
