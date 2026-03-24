@@ -73,6 +73,11 @@ int main()
             ballSpeed.y *= -1.0f;
         }
 
+        if (ballPosition.y - ballRadius > screenHeight) {
+            ballPosition = { 470, 300 };
+            ballSpeed = { 5.0f, -5.0f };
+        }
+
         // Draw
         BeginDrawing();
         ClearBackground(BLACK);
