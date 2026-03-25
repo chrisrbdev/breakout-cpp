@@ -13,6 +13,16 @@ struct Brick {
     bool active;
 };
 
+void ResetBall(Vector2& ballPosition, Vector2& ballSpeed) {
+    ballPosition = { 470, 300 };
+    ballSpeed = { 5.0f, -5.0f };
+}
+
+void ResetPaddle(Rectangle& paddle) {
+    paddle.x = 400;
+    paddle.y = 500;
+}
+
 int main() {
     GameState gameState = START;
     int score = 0;
@@ -82,8 +92,8 @@ int main() {
         }
 
         if (ballPosition.y - ballRadius > screenHeight) {
-            ballPosition = { 470, 300 };
-            ballSpeed = { 4.0f, -4.0f };
+            ResetPaddle(paddle);
+            ResetBall(ballPosition, ballSpeed);
         }
 
         // PADDLE COLLISION
