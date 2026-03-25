@@ -1,14 +1,22 @@
 #include "raylib.h"
 #include <vector>
 
-struct Brick
-{
+enum GameState {
+    START,
+    PLAYING,
+    WIN,
+    GAME_OVER
+};
+
+struct Brick {
     Rectangle rect;
     bool active;
 };
 
-int main()
-{
+int main() {
+    GameState gameState = START;
+    int score = 0;
+    int lives = 3;
     const int screenWidth = 960;
     const int screenHeight = 540;
 
