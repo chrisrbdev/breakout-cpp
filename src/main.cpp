@@ -13,6 +13,32 @@ struct Brick {
     bool active;
 };
 
+std::vector<Brick> CreateBricks() {
+    std::vector<Brick> bricks;
+    const int rows = 5;
+    const int cols = 10;
+    const float brickWidth = 80.0f;
+    const float brickHeight = 25.0f;
+    const float brickPadding = 10.0f;
+    const float startX = 35.0f;
+    const float startY = 60.0f;
+
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            Brick brick;
+            brick.rect = {
+                startX + col * (brickWidth + brickPadding),
+                startY + row * (brickHeight + brickPadding),
+                brickWidth,
+                brickHeight
+            };
+            brick.active = true;
+            bricks.push_back(brick);
+        }
+    }
+    return bricks;
+}
+
 void ResetBall(Vector2& ballPosition, Vector2& ballSpeed) {
     ballPosition = { 470, 300 };
     ballSpeed = { 5.0f, -5.0f };
@@ -39,28 +65,7 @@ int main() {
     Vector2 ballSpeed = {4.0f, -4.0f};
     float ballRadius = 10.0f;
 
-    std::vector<Brick> bricks;
-
-    const int rows = 5;
-    const int cols = 10;
-    const float brickWidth = 80.0f;
-    const float brickHeight = 25.0f;
-    const float brickPadding = 10.0f;
-    const float startX = 35.0f;
-    const float startY = 60.0f;
-
-    for (int row = 0; row < rows; row++) {
-        for (int col = 0; col < cols; col++) {
-            Brick brick;
-            brick.rect = {
-                startX + col * (brickWidth + brickPadding),
-                startY + row * (brickHeight + brickPadding),
-                brickWidth,
-                brickHeight};
-            brick.active = true;
-            bricks.push_back(brick);
-        }
-    }
+    std::vector<Brick> bricks = CreateBricks();
 
     while (!WindowShouldClose()) {
         // Update
