@@ -42,7 +42,7 @@ std::vector<Brick> CreateBricks() {
 void ResetBall(Vector2& ballPosition, Vector2& ballSpeed, const Rectangle& paddle, float ballRadius) {
     ballPosition.x = paddle.x + paddle.width / 2.0f;
     ballPosition.y = paddle.y - ballRadius - 2.0f;
-    ballSpeed = { 5.0f, -5.0f };
+    ballSpeed = { 0.0f, -5.0f };
 }
 
 void ResetPaddle(Rectangle &paddle, int screenWidth, int screenHeight) {
@@ -116,7 +116,7 @@ int main() {
             ballPosition.y = paddle.y - ballRadius - 2.0f;
 
             if (IsKeyPressed(KEY_SPACE)) {
-                ballSpeed = { 5.0f, -5.0f };
+                ballSpeed = { 0.0f, -5.0f };
                 gameState = PLAYING;
             }
         }
