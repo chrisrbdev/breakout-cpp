@@ -19,7 +19,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raylib)
 
 # Our Project
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME}
+    src/main.cpp
+    src/core/BreakoutGame.cpp
+    src/core/BrickFactory.cpp
+    src/rendering/GameRenderer.cpp
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
