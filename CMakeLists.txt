@@ -21,6 +21,7 @@ FetchContent_MakeAvailable(raylib)
 # Our Project
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/audio/ProceduralMusicEngine.cpp
     src/core/BreakoutGame.cpp
     src/core/BrickFactory.cpp
     src/rendering/GameRenderer.cpp
@@ -29,6 +30,9 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>)
