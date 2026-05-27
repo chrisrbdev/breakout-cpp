@@ -8,11 +8,17 @@ namespace breakout {
 
 BreakoutGame::BreakoutGame() {
     InitWindow(config_.screenWidth, config_.screenHeight, "cpp-breakout-raylib");
+    InitAudioDevice();
+    hasProceduralMusic_ = musicEngine_.Init();
     SetTargetFPS(config_.targetFps);
     ResetGame();
 }
 
 BreakoutGame::~BreakoutGame() {
+    if (hasProceduralMusic_) {
+        musicEngine_.Shutdown();
+    }
+    CloseAudioDevice();
     CloseWindow();
 }
 
@@ -27,6 +33,8 @@ void BreakoutGame::ResetGame() {
     session_.score = 0;
     session_.lives = config_.initialLives;
     session_.bricks = CreateBricks(config_.brickLayout);
+    session_.musicEnabled = hasProceduralMusic_;
+    session_.musicMuted = hasProceduralMusic_ && musicEngine_.IsMuted();
     ResetRound();
     session_.state = GameState::Start;
 }
@@ -38,9 +46,17 @@ void BreakoutGame::ResetRound() {
     session_.paddle.y = config_.screenHeight - config_.paddleBottomOffset;
     session_.ballSpeed = {0.0f, config_.ballLaunchSpeed};
     SyncBallWithPaddle();
+
+    if (hasProceduralMusic_) {
+        musicEngine_.OnRoundStart();
+    }
 }
 
 void BreakoutGame::Update() {
+    if (hasProceduralMusic_ && IsKeyPressed(KEY_M)) {
+        musicEngine_.ToggleMute();
+    }
+
     switch (session_.state) {
         case GameState::Start:
             UpdateStartState();
@@ -53,6 +69,15 @@ void BreakoutGame::Update() {
             UpdateEndState();
             break;
     }
+
+    if (hasProceduralMusic_) {
+        musicEngine_.UpdateFromGame(session_, config_);
+        session_.musicMuted = musicEngine_.IsMuted();
+    } else {
+        session_.musicMuted = false;
+    }
+
+    session_.musicEnabled = hasProceduralMusic_;
 }
 
 void BreakoutGame::UpdateStartState() {
@@ -74,6 +99,9 @@ void BreakoutGame::UpdatePlayingState() {
     HandleLifeLoss();
 
     if (session_.state == GameState::Playing && AreAllBricksDestroyed(session_.bricks)) {
+        if (hasProceduralMusic_) {
+            musicEngine_.OnWin();
+        }
         session_.state = GameState::Win;
     }
 }
@@ -150,6 +178,10 @@ void BreakoutGame::HandlePaddleCollision() {
     if (session_.ballSpeed.x > -2.0f && session_.ballSpeed.x < 2.0f) {
         session_.ballSpeed.x = (session_.ballSpeed.x < 0.0f) ? -2.0f : 2.0f;
     }
+
+    if (hasProceduralMusic_) {
+        musicEngine_.OnPaddleHit();
+    }
 }
 
 void BreakoutGame::HandleBrickCollision() {
@@ -161,6 +193,11 @@ void BreakoutGame::HandleBrickCollision() {
         brick.active = false;
         session_.ballSpeed.y *= -1.0f;
         session_.score += config_.brickScore;
+
+        if (hasProceduralMusic_) {
+            musicEngine_.OnBrickHit();
+        }
+
         break;
     }
 }
@@ -172,10 +209,18 @@ void BreakoutGame::HandleLifeLoss() {
 
     --session_.lives;
 
+    if (hasProceduralMusic_) {
+        musicEngine_.OnLifeLost();
+    }
+
     if (session_.lives > 0) {
         ResetRound();
         session_.state = GameState::Start;
         return;
+    }
+
+    if (hasProceduralMusic_) {
+        musicEngine_.OnGameOver();
     }
 
     session_.state = GameState::GameOver;

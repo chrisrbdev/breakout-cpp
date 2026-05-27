@@ -1,5 +1,6 @@
 #pragma once
 
+#include "audio/ProceduralMusicEngine.h"
 #include "core/GameConfig.h"
 #include "core/GameSession.h"
 
@@ -31,6 +32,8 @@ private:
 
     GameConfig config_{};
     GameSession session_{};
+    ProceduralMusicEngine musicEngine_{};
+    bool hasProceduralMusic_ = false;
 };
 
 }  // namespace breakout

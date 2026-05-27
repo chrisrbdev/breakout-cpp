@@ -16,6 +16,8 @@ struct GameSession {
     Vector2 ballSpeed{};
     std::vector<Brick> bricks;
     GameState state = GameState::Start;
+    bool musicEnabled = false;
+    bool musicMuted = false;
 };
 
 }  // namespace breakout

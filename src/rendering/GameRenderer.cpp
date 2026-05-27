@@ -27,13 +27,26 @@ void DrawCenteredText(const char* text, int y, int fontSize, Color color, int sc
 
 void DrawHud(const GameSession& session, const GameConfig& config) {
     const int margin = 20;
-    const int fontSize = 20;
+    const int scoreFontSize = 22;
+    const int statusFontSize = 14;
+    const int livesFontSize = 20;
 
-    DrawText(TextFormat("Score: %i", session.score), margin, margin, fontSize, RAYWHITE);
+    const char* scoreText = TextFormat("Score: %i", session.score);
+    const int scoreTextWidth = MeasureText(scoreText, scoreFontSize);
+    DrawText(scoreText, (config.screenWidth - scoreTextWidth) / 2, 16, scoreFontSize, RAYWHITE);
 
     const char* livesText = TextFormat("Lives: %i", session.lives);
-    const int livesTextWidth = MeasureText(livesText, fontSize);
-    DrawText(livesText, config.screenWidth - livesTextWidth - margin, margin, fontSize, RAYWHITE);
+    const int livesTextWidth = MeasureText(livesText, livesFontSize);
+    DrawText(livesText, config.screenWidth - livesTextWidth - margin, 20, livesFontSize, RAYWHITE);
+
+    if (!session.musicEnabled) {
+        DrawText("Procedural music unavailable", margin, 20, statusFontSize, ORANGE);
+        return;
+    }
+
+    DrawText("M: mute/unmute music", margin, 20, statusFontSize, DARKGRAY);
+    DrawText(session.musicMuted ? "Music: OFF" : "Music: ON", margin, 38, statusFontSize,
+             session.musicMuted ? ORANGE : GREEN);
 }
 
 void DrawStateMessage(GameState state, int screenWidth) {
@@ -58,6 +71,7 @@ void DrawStateMessage(GameState state, int screenWidth) {
 
 void DrawGame(const GameSession& session, const GameConfig& config) {
     ClearBackground(BLACK);
+    DrawHud(session, config);
 
     for (int index = 0; index < static_cast<int>(session.bricks.size()); ++index) {
         if (!session.bricks[index].active) {
@@ -70,7 +84,6 @@ void DrawGame(const GameSession& session, const GameConfig& config) {
 
     DrawRectangleRec(session.paddle, WHITE);
     DrawCircleV(session.ballPosition, config.ballRadius, YELLOW);
-    DrawHud(session, config);
     DrawStateMessage(session.state, config.screenWidth);
 }
 
