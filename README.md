@@ -2,19 +2,6 @@
 
 A small Breakout-style arcade game written in C++ with [raylib](https://www.raylib.com/). Move the paddle, keep the ball alive, clear all of the bricks, and listen as the procedural soundtrack reacts to the match.
 
-## Screenshots
-
-The repository already has a screenshot slot that can be replaced with current gameplay captures:
-
-![Game screenshot placeholder](screenshots/screenshot000.png)
-
-Suggested extra captures:
-
-- `screenshots/start-screen.png`
-- `screenshots/gameplay.png`
-- `screenshots/win-screen.png`
-- `screenshots/game-over.png`
-
 ## Requirements
 
 - CMake 3.24 or newer
